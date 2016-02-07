@@ -1,0 +1,33 @@
+#mapSection{
+	height:600px;
+}
+#locationListSection{
+	padding-right: 0px;
+}
+
+#locationListSection ul{
+	list-style-type: none;
+	padding: 0px !important;
+}
+
+#locationListSection ul li{
+	padding: 15px 10px;
+	border: 1px solid #dedede;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	cursor: pointer;
+	color: #888;
+}
+
+#locationListSection ul li:hover{
+	background-color: #fff8dc;
+}
+
+#mapSection{
+	border-radius: 5px;
+}
+
+#searchBarSection{
+	background-color: #eee;
+    margin-bottom: 15px;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neighborhood Map</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="neighborhood-map.css">
+</head>
+<body>
+	<article class="container-fluid">
+		<section class="row">
+			<section class="col-xs-12" id="searchBarSection">
+				<section class="form-group col-md-3">
+					<label for="searchBox"></label>
+					<input type="text" id="searchBox" class="form-control" data-bind="value: searchString, valueUpdate: 'keyup'" placeholder="Filter places ...">
+				</section>
+				<section class="col-md-9">
+					<h2 id="heading">My Neighborhood</h2>
+				</section>
+			</section>	
+		</section>
+		<section class="row">
+			<section class="col-xs-12 col-md-3" id="locationListSection">
+				<ul data-bind="foreach: filteredPlaceList">
+					<li data-bind="text: name, click: animateMarker"></li>
+				</ul>
+			</section>	
+			<section class="col-xs-12 col-md-9" >
+				<section id="mapSection"></section>
+			</section>
+		</section>		
+	</article>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=geometry"></script>
+	<script type="text/javascript" src="neighborhood-map.js"></script>
+</body>
+</html>
