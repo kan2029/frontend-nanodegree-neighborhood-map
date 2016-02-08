@@ -34,14 +34,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=geometry"></script>
+	<!-- Shifter map initialization function to a new js file so that it can be called as a callback function by google maps api -->
+	<script type="text/javascript" src="neighborhood-map-init.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=geometry&callback=googleMap.init"></script>
 	<script type="text/javascript" src="neighborhood-map.js"></script>
-	<!-- Did not initialize googleMap.init() as a callback function because init function is defined in script neighborhood-map.js -->
-	<script type="text/javascript">
-		googleMap.init();
-	</script>
-
-
 	
 </body>
 </html>
