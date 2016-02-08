@@ -1,30 +1,35 @@
 
 //hardcoded locations in map
-var initialPlaces = [
+initialPlaces = [
 	{
 		name: 'McDonalds',
 		id: 0,
 		geolocation: {lat: 12.973565, lng: 77.633414},
+		marker: ''
 	},
 	{
 		name: "Gold's Gym",
 		id: 1,
 		geolocation: {lat: 12.970510, lng: 77.645462},
+		marker: ''
 	},
 	{
 		name: "Pizza hut",
 		id: 2,
 		geolocation: {lat: 12.978221, lng: 77.640676},
+		marker: ''
 	},
 	{
 		name: "Dominos",
 		id: 3,
 		geolocation: {lat: 12.978158, lng: 77.639394},
+		marker: ''
 	}, 
 	{
 		name: "Burger King",
 		id: 4,
-		geolocation: {lat: 12.978025, lng: 77.646311},	 
+		geolocation: {lat: 12.978025, lng: 77.646311},
+		marker: ''	 
 	}
 ];
 
@@ -34,6 +39,7 @@ googleMap = {
 	map: '',
 	infowindows: [],
 	init: function(){
+		//console.log('map init');
 		this.map = new google.maps.Map(document.getElementById('mapSection'), {
 		    center: {lat: 12.977230, lng: 77.640904},
 		    scrollwheel: false,
@@ -45,9 +51,9 @@ googleMap = {
 			   position: initialPlaces[i].geolocation,
 			   map: googleMap.map
 			});	
+
 			var infowindow = new google.maps.InfoWindow({
 			});	
-
 			googleMap.initialMarkers[i].addListener('click', (function(j) {
 			 	return function() {
 			 		googleMap.initialMarkers[j].setAnimation(google.maps.Animation.BOUNCE);
@@ -76,9 +82,10 @@ googleMap = {
 						        infowindow.setContent('Request could not be completed because of status: '+request.status+', error: '+err+'. Please try again');
 						    }
 						});
-					}, 750);	
+					}, 700);	
 			  	}
 			})(i));
+
 			this.infowindows.push(infowindow);
 		}		
 	},
@@ -102,7 +109,7 @@ googleMap = {
 			},
 			timeout: 5000,
 			error: function (request, status, err) {
-		        infowindow.setContent('Request could not be completed because of status: '+request.status+', error: '+err+'. Please try again');
+		        googleMap.infowindows[index].setContent('Request could not be completed because of status: '+request.status+', error: '+err+'. Please try again');
 		    }
 		});
 	}
@@ -113,12 +120,12 @@ var Place = function(data){
 	this.name = ko.observable(data.name);
 	this.geolocation = ko.observable(data.geolocation);
 	this.id = ko.observable(data.id);
+	this.marker = googleMap.initialMarkers[data.id];
 };
 
 //The octopus!
 var viewModel = function(){
 	var self = this;
-
 	self.placeList = ko.observableArray([]);
 	initialPlaces.forEach(function(place){
 		self.placeList.push(new Place(place));
@@ -130,10 +137,18 @@ var viewModel = function(){
 	//returns those locations that has the string entered by user. Displays all places when no input it there
 	self.filteredPlaceList = ko.observableArray([]);
 	self.filteredPlaceList = ko.computed(function () {
+		
 	    return ko.utils.arrayFilter(self.placeList(), function (rec) {
-            return (
+            /*return (
                (self.searchString().length == 0 || rec.name().toLowerCase().indexOf(self.searchString().toLowerCase()) > -1)
-            );
+            );*/
+	    	if(self.searchString().length == 0 || rec.name().toLowerCase().indexOf(self.searchString().toLowerCase()) > -1){
+	    		rec.marker.setVisible(true);
+	    		return true;
+	    	}else{
+	    		rec.marker.setVisible(false);
+	    		return false;
+	    	}
 	    });
 	});
 
@@ -148,44 +163,9 @@ var viewModel = function(){
         	googleMap.infowindows[thisObj.id()].setContent('fetching data ...');
 	    	googleMap.infowindows[thisObj.id()].open(googleMap.map, googleMap.initialMarkers[thisObj.id()]);
 	    	googleMap.getWikiData(thisObj.id());	
-        },750);
+        },700);
 	}
 }
 
-
+/*googleMap.init();*/
 ko.applyBindings(new viewModel);
-
-
-$(document).ready(function(){
-	googleMap.init();
-
-	//This keyup event shows only those markers that are filtered by user by entering infilter text box
-	$('#searchBox').keyup(function(){
-		//get filtered places
-		var filteredNames = [];
-		var filteredGeolocation = [];
-		var listElement = $('#locationListSection').find('li');
-		for(var i = 0; i < listElement.length; i++){
-			filteredNames.push(listElement.eq(i).html());
-		}
-		for(var i=0; i < filteredNames.length; i++){
-			for(var j=0; j< initialPlaces.length; j++){
-				if(filteredNames[i] == initialPlaces[j].name){
-					filteredGeolocation.push(initialPlaces[j].geolocation);
-				}
-			}
-		}
-
-		//Show markers of only filtered places
-		for (var i = 0; i < googleMap.initialMarkers.length; i++) {
-			googleMap.initialMarkers[i].setMap(null);
-		}
-		for (var i = 0; i < googleMap.initialMarkers.length; i++) {
-			for(var j=0; j < filteredGeolocation.length; j++){
-				if(filteredGeolocation[j].lat == googleMap.initialMarkers[i].position.lat().toFixed(6) && filteredGeolocation[j].lng == googleMap.initialMarkers[i].position.lng().toFixed(6)){
-				   	googleMap.initialMarkers[i].setMap(googleMap.map);
-				}   		
-			}
-		}
-	});
-});
