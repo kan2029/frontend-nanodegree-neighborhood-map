@@ -49,6 +49,3 @@ var viewModel = function(){
         },700);
 	}
 }
-
-/*googleMap.init();*/
-ko.applyBindings(new viewModel);

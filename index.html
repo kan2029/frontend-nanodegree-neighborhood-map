@@ -36,7 +36,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<!-- Shifter map initialization function to a new js file so that it can be called as a callback function by google maps api -->
 	<script type="text/javascript" src="neighborhood-map-init.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=geometry&callback=googleMap.init"></script>
+	<!-- added async and defer attributes -->
+	<script async defer src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry&callback=googleMap.init" onerror="googleMap.errorHandling()"></script>
 	<script type="text/javascript" src="neighborhood-map.js"></script>
 	
 </body>
